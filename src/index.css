@@ -1,0 +1,54 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body{
+    background-color: rgb(41, 41, 41);
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(83, 83, 83); 
+    border-radius: 5px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    border: solid 2px rgb(46, 46, 46);
+    background: rgb(53, 53, 53); 
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #222222; 
+  }
+
+  .spl-frac{
+    display: flex;
+    align-items: center
+  }
+  
+  .frac-main{
+    width: fit-content;
+  }
+  
+  .frac-first{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    display: block;
+  }
+  
+  .frac-sec{
+    width: 100%;
+    display: block;
+    text-align: center;
+    border-top: solid 0.15rem;
+    ;
+  }

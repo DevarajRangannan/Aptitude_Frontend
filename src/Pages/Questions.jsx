@@ -93,7 +93,7 @@ export default function Questions() {
         {
           Questions !== null ? <div className=''>
               {Questions.map((question,i)=>{
-                return <div key={i}  className='my-5 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded-lg overflow-hidden '>
+                return <div key={i}  className='mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded-lg overflow-hidden '>
                     <div className='flex  font-normal	text-base md:text-lg'>
                       {i+1}.
                       <div  dangerouslySetInnerHTML={{__html:question.code}} className={`ml-3 `}></div>

@@ -82,7 +82,7 @@ export default function Notes() {
       {
         Notes !== null ? <div className='p-3'>
         {Notes.map((note,i)=>{
-          return <div key={i}  className='text-white mb-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
+          return <div key={i}  className='text-white mb-5 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded overflow-hidden '>
               <div className='flex  font-normal	text-base  md:text-lg'>
                 {i+1}.
                 <div  dangerouslySetInnerHTML={{__html:note.type}} className={`ml-3 `}></div>

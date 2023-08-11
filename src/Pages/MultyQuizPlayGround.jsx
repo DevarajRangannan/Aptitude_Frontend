@@ -103,7 +103,7 @@ export default function MuliQuizPlayGround() {
             {
               currentQuestions.length > 0 ? <div className='p-3 '>
                   {currentQuestions.map((question,i)=>{
-                    return <div key={i}  className='text-white my-5 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
+                    return <div key={i}  className='text-white my-5 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded overflow-hidden '>
                         <div className='flex  font-normal	text-base md:text-lg'>
                           {(QuestionNo-(NOMBER_OF_QUENTIONS-1))+i}.
                           <div  dangerouslySetInnerHTML={{__html:question.code}} className={`ml-3 `}></div>

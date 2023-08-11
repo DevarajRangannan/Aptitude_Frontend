@@ -17,7 +17,7 @@ const check = (e)=>{
 
 export default function App() {
   return (
-    <div className='min-w-[20rem] lg:max-w-screen-2xl lg:m-auto w-full'>
+    <div className='min-w-[20rem] lg:max-w-screen-2xl lg:m-auto w-full selection:bg-gray-700 selection:text-white'>
       <nav className='w-full h-16 bg-[#242323] flex items-center drop-shadow-[0_3px_5px_rgba(0,255,255,.3)]' >
         <Link to='/' className='ml-5 md:ml-10 flex items-center' onClick={(e)=>check(e)}>
           <div className=' w-10'><Logo/></div>

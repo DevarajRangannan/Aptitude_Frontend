@@ -14,7 +14,6 @@ export default function Notes() {
   navigate = useNavigate ();
   let [Notes, setNotes] = useState(null)
 
-  console.log(Notes);
   title = useParams().title
 
   useEffect(()=>{
@@ -81,9 +80,9 @@ export default function Notes() {
       </div>
 
       {
-        Notes !== null ? <div >
+        Notes !== null ? <div className='p-3'>
         {Notes.map((note,i)=>{
-          return <div key={i}  className='text-white my-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
+          return <div key={i}  className='text-white mb-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
               <div className='flex  font-normal	text-base  md:text-lg'>
                 {i+1}.
                 <div  dangerouslySetInnerHTML={{__html:note.type}} className={`ml-3 `}></div>

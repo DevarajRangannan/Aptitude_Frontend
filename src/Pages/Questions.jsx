@@ -56,12 +56,14 @@ export default function Questions() {
     try{
       let res = await axios.get(process.env.REACT_APP_QUESTIONS_API + title)
       
-      setQuestions(await shuffleQuestions(res.data))
 
       if(res){
         let temp = JSON.stringify({"Q":await res.data, "N":JSON.parse(localStorage.getItem(title))?.N})
         localStorage.setItem(title,temp)
       }
+
+      setQuestions(await shuffleQuestions(res.data))
+
 
       
     }catch(e){
@@ -89,7 +91,7 @@ export default function Questions() {
         </div>
 
         {
-          Questions !== null ? <div >
+          Questions !== null ? <div className=''>
               {Questions.map((question,i)=>{
                 return <div key={i}  className='my-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
                     <div className='flex  font-normal	text-base md:text-lg'>

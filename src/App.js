@@ -5,6 +5,7 @@ import Notes from './Pages/Notes'
 import Questions from './Pages/Questions'
 import { ReactComponent as Logo } from './asserts/d-logo-white.svg'
 import MultiQuiz from './Pages/MultiQuiz'
+import MuliQuizPlayGround from './Pages/MultyQuizPlayGround'
 
 const check = (e)=>{
 
@@ -30,7 +31,7 @@ export default function App() {
           <Route path='/notes/:title' Component={Notes}/>
           <Route path='/topic/:title' Component={Questions}/>
           <Route path='/multi-quiz' Component={MultiQuiz}/>
-          <Route path='/multi-quiz-ground' Component={MultiQuiz}/>
+          <Route path='/multi-quiz-ground' Component={MuliQuizPlayGround}/>
           <Route path='/*' Component={Home}/>
         </Routes>
       </div>

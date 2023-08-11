@@ -18,7 +18,7 @@ export default function Home() {
                 
 
                 {TOPICS.map((topic, i)=>{
-                    return <span className='inline flex'>
+                    return <span key={i}  className='inline flex'>
                         <Link to={`/topic/`+topic.replace(/ /g,"-").toLowerCase()} className='hover:underline mb-2 flex items-center group' key={i} state={{title:topic}}>
                                 <span className='fill-yellow-500 group-hover:fill-yellow-700'>
                                     <FOLDER_ICON/>

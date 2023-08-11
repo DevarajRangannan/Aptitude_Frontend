@@ -14,39 +14,27 @@ let shuffleQuestions;
 
 
 export default function Questions() {
-  let [Questions, setQuestions] = useState()
+  let [Questions, setQuestions] = useState(null)
 
   navigate = useNavigate ();
 
   title = useParams().title
 
   TOPIC_HAS = TOPICS.includes(title)
-
   useEffect(()=>{
-
-    let expDate = new Date()
-    let updatedDate = new Date()
-
-    expDate.setTime(localStorage.getItem("expDate")) 
-    const TIME_DIFF = Math.round((updatedDate - expDate)/(24 * 60 * 60 * 1000))
-
+    
     if(!TOPIC_HAS){      
       return navigate('/')
     }
 
-    if(!localStorage.getItem(title)){
+    if(!JSON.parse(localStorage.getItem(title))?.Q){
       getQuestion()
-    }
-    else{
-      
-      if(TIME_DIFF > 0){
-        getQuestion()
-      }
 
-      else{
-        let data = JSON.parse(localStorage.getItem(title))
-        setQuestions(shuffleQuestions(data));
-      }
+    }
+
+    else{
+      let data = JSON.parse(localStorage.getItem(title))
+      setQuestions(shuffleQuestions(data.Q));
     }
       
   },[])
@@ -68,15 +56,11 @@ export default function Questions() {
     try{
       let res = await axios.get(process.env.REACT_APP_QUESTIONS_API + title)
       
-
-
-
       setQuestions(await shuffleQuestions(res.data))
 
       if(res){
-        let temp = JSON.stringify(await res.data)
+        let temp = JSON.stringify({"Q":await res.data, "N":JSON.parse(localStorage.getItem(title))?.N})
         localStorage.setItem(title,temp)
-        localStorage.setItem("expDate",new Date().getTime())
       }
 
       
@@ -86,9 +70,12 @@ export default function Questions() {
   }
 
   const viewAnswer = (id)=>{
-    console.log(id);
     let elem = document.getElementById("answer-"+id)
     elem.classList.remove("hidden")
+  }
+
+  const clearExpDate = () =>{
+    localStorage.setItem(title,JSON.stringify({Q:null, "N":JSON.parse(localStorage.getItem(title))?.N}))
   }
   
 
@@ -96,13 +83,13 @@ export default function Questions() {
     <>
       {
         TOPIC_HAS? <div className='text-white p-3  '>
-        <div className='text-xl md:text-3xl font-semibold'>{title.replace(/-/g," ").toUpperCase()}</div>
+        <div className='text-xl md:text-3xl font-semibold' onClick={()=>{clearExpDate()}}>{title.replace(/-/g," ").toUpperCase()}</div>
         <div>
-          <Link to={`/notes/`+title} className='bg-emerald-600 rounded-md px-5 py-2 mt-3 inline-block hover:bg-emerald-800'>Go To Notes</Link>
+          <Link to={`/notes/`+title} className='bg-emerald-600 rounded-md px-5 py-2 mt-3 inline-block hover:bg-emerald-800' >Go To Notes</Link>
         </div>
 
         {
-          Questions !== undefined ? <div >
+          Questions !== null ? <div >
               {Questions.map((question,i)=>{
                 return <div key={i}  className='my-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
                     <div className='flex  font-normal	text-base md:text-lg'>
@@ -124,7 +111,6 @@ export default function Questions() {
                     <div className='ml-3 p-1 w-fit fill-white border rounded hover:fill-emerald-700 hover:border-emerald-500 hover:cursor-pointer' onClick={()=>{viewAnswer(i)}}><ANSWER_ICON/></div>
 
                     <div id={`answer-`+i} className='m-3 hidden'><span  className='text-emerald-500 font-semibold '>Answer: </span><span className='rounded-full border-2 text-xs px-1 py-0'>{OPTIONS[question.answer-1]}</span></div>
-                    
                 </div>
               })}
             </div>

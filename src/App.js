@@ -28,7 +28,7 @@ export default function App() {
           <Route exact path='/' Component={Home}/>
           <Route path='/notes/:title' Component={Notes}/>
           <Route path='/topic/:title' Component={Questions}/>
-          <Route path='*' Component={Home}/>
+          <Route path='/*' Component={Home}/>
 
         </Routes>
       </div>

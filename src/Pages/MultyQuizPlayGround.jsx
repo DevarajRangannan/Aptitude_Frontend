@@ -6,7 +6,7 @@ import { useLocation } from 'react-router'
 let navigate, selected_length, selectedTopics, shuffleQuestions, totalPageNo=0;
 
 const OPTIONS = ['A', 'B', 'C', 'D']
-const NOMBER_OF_QUENTIONS = 5
+const NOMBER_OF_QUENTIONS = 30
 
 export default function MuliQuizPlayGround() {
   navigate = useNavigate ();
@@ -67,7 +67,6 @@ export default function MuliQuizPlayGround() {
 
       setCurrentQuestions(suffledQuestions.slice(0,NOMBER_OF_QUENTIONS))
       setQuestions(suffledQuestions)
-      console.log(suffledQuestions);
 
       totalPageNo = Math.ceil(neededQuestions.length/NOMBER_OF_QUENTIONS)
     }
@@ -79,18 +78,13 @@ export default function MuliQuizPlayGround() {
 
     setPageNo(pageNo+1)
     window.scroll(0, 0);
-    // console.log(QuestionNo);
-
   }
 
   const backPage = ()=>{
     setQuestionNo(QuestionNo-NOMBER_OF_QUENTIONS)
-    console.log(QuestionNo);
-
     setCurrentQuestions(Questions.slice(QuestionNo-(NOMBER_OF_QUENTIONS*2), QuestionNo - NOMBER_OF_QUENTIONS ))
     setPageNo(pageNo-1)
     window.scroll(0, 0);
-    
   }
   
 
@@ -99,7 +93,7 @@ export default function MuliQuizPlayGround() {
     <>
       {
         selected_length > 0 ? <>
-            <div className='text-white'>
+            <div className='text-white '>
               <div className=' p-3'>
                   <span className='text-xl md:text-3xl font-semibold ' >Multy Quiz Playround</span>
               </div>
@@ -107,9 +101,9 @@ export default function MuliQuizPlayGround() {
               <div className='text-right mr-3'>{pageNo}/{totalPageNo} pages</div>
             </div>
             {
-              currentQuestions.length > 0 ? <div >
+              currentQuestions.length > 0 ? <div className='p-3 '>
                   {currentQuestions.map((question,i)=>{
-                    return <div key={i}  className='text-white my-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
+                    return <div key={i}  className='text-white my-5 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,0,0,.8)] rounded overflow-hidden '>
                         <div className='flex  font-normal	text-base md:text-lg'>
                           {(QuestionNo-(NOMBER_OF_QUENTIONS-1))+i}.
                           <div  dangerouslySetInnerHTML={{__html:question.code}} className={`ml-3 `}></div>

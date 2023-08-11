@@ -50,7 +50,7 @@ export default function MultiQuiz() {
                         <Link to={`/multi-quiz-ground`} className='bg-emerald-600 rounded-md px-3 py-2  inline-block hover:bg-emerald-800' state={{selected:TOPICS}}>Suffle All Topics</Link>
                     </span>
                     <span className=''>
-                        <button className=' disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800' disabled={false} onClick={()=>{startMultiQuiz()}}>
+                        <button className='disabled:cursor-not-allowed disabled:bg-emerald-600/30 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800' disabled={selected.length<=0?true:false} onClick={()=>{startMultiQuiz()}}>
                             Start
                         </button>
                     </span>
@@ -59,15 +59,15 @@ export default function MultiQuiz() {
 
             
             
-            <div className={`my-5 p-5 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded md:text-lg grid md:grid-cols-2 select-none `}>
+            <div className={`my-5 p-5 lg:pl-10 bg-[#242323] drop-shadow-[0_3px_5px_rgba(0,0,0,.8)] rounded md:text-lg grid md:grid-cols-2 select-none `}>
                 {TOPICS.map((topic, i)=>{
-                    return <span key={i} className='flex '>
-                        <span className=''>
+                    return <span key={i} className='flex items-center mb-3'>
+                        <span className=' flex items-center'>
                             <input type="checkbox" id={`check-box-`+i} name={"topic"} value={topic} className='hover:cursor-pointer' onChange={(e)=>x(e)}/>
                         </span>
-                        <label htmlFor={`check-box-`+i} className='ml-3 hover:cursor-pointer group'>
-                            <span className=' mb-2 flex items-center' key={i} state={{title:topic}}>
-                                <span className='fill-yellow-500  group-hover:fill-yellow-700'>
+                        <label htmlFor={`check-box-`+i} className='ml-3 p-1 hover:cursor-pointer group '>
+                            <span className='  flex items-center ' key={i} state={{title:topic}}>
+                                <span className='fill-yellow-500  group-hover:fill-yellow-700 '>
                                     <FOLDER_ICON/>
                                 </span>
                                 <span className='ml-1'>{topic}</span>
@@ -81,7 +81,7 @@ export default function MultiQuiz() {
             </div>
 
             <div className='w-full  flex justify-center'>
-                <button className='disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800' disabled={false} onClick={()=>{startMultiQuiz()}}>
+                <button className='disabled:cursor-not-allowed disabled:bg-emerald-600/30 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800' disabled={selected.length<=0?true:false} onClick={()=>{startMultiQuiz()}}>
                     Start
                 </button>
             </div>

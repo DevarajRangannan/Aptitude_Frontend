@@ -73,7 +73,11 @@ export default function Questions() {
 
   const viewAnswer = (id)=>{
     let elem = document.getElementById("answer-"+id)
-    elem.classList.remove("hidden")
+    let breif_answer_elem = document.getElementById("breif-answer-"+id)
+    
+    elem.classList.toggle("hidden")
+    breif_answer_elem.classList.toggle("hidden")
+
   }
 
   const clearExpDate = () =>{
@@ -113,6 +117,8 @@ export default function Questions() {
                     <div className='ml-3 p-1 w-fit fill-white border rounded hover:fill-emerald-700 hover:border-emerald-500 hover:cursor-pointer' onClick={()=>{viewAnswer(i)}}><ANSWER_ICON/></div>
 
                     <div id={`answer-`+i} className='m-3 hidden'><span  className='text-emerald-500 font-semibold '>Answer: </span><span className='rounded-full border-2 text-xs px-1 py-0'>{OPTIONS[question.answer-1]}</span></div>
+
+                    <div id={`breif-answer-`+i} className='overflow-x-auto ml-3 p-3 hidden' dangerouslySetInnerHTML={{__html:question.breaf_answer}}></div>
                 </div>
               })}
             </div>

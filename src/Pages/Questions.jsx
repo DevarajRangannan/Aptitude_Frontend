@@ -98,18 +98,22 @@ export default function Questions() {
           Questions !== null ? <div className=''>
               {Questions.map((question,i)=>{
                 return <div key={i}  className='mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded-lg overflow-hidden '>
+                  
                     <div className='flex  font-normal	text-base md:text-lg'>
                       {i+1}.
                       <div  dangerouslySetInnerHTML={{__html:question.code}} className={`ml-3 `}></div>
+                      
                     </div>
 
                     {
                       OPTIONS.map((OPTION,i)=>{
                         return <div key={i} className='relative ml-3 flex items-center my-3 overflow-hidden text-sm'>
+                                 
                                   <span className=' flex justify-center items-center select-none '>
                                     <span className='border-2 rounded-full px-1 py-0 text-xs  flex justify-center items-center'><div>{OPTION}</div></span>
                                   </span>
-                                  <div className={`ml-3 `}   dangerouslySetInnerHTML={{__html:question.options[i]}}></div>      
+                                  <div className={`ml-3 `}   dangerouslySetInnerHTML={{__html:question.options[i]}}></div>     
+                                   
                                 </div>
                       })
                     }
@@ -118,6 +122,7 @@ export default function Questions() {
 
                     <div id={`answer-`+i} className='m-3 hidden'><span  className='text-emerald-500 font-semibold '>Answer: </span><span className='rounded-full border-2 text-xs px-1 py-0'>{OPTIONS[question.answer-1]}</span></div>
 
+                    
                     <div id={`breif-answer-`+i} className='overflow-x-auto ml-3 p-3 hidden' dangerouslySetInnerHTML={{__html:question.breaf_answer}}></div>
                 </div>
               })}

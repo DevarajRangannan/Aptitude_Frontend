@@ -1,20 +1,23 @@
 import React, {useState, useEffect } from 'react'
-import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router'
+import { useNavigate,useLocation } from 'react-router'
+import axios from 'axios';
 
+let navigate, selected_length, selectedTopics, shuffleQuestions, TOPIC_HAS, fetchData, MARK = 0;
 
-let navigate, selected_length, selectedTopics, shuffleQuestions, totalPageNo=0;
+const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "time-and-work", "simple-interest", "compound-interest"]
+
 
 const OPTIONS = ['A', 'B', 'C', 'D']
 const NOMBER_OF_QUENTIONS = 30
-
 export default function MuliQuizPlayGround() {
   navigate = useNavigate ();
 
-  const [Questions, setQuestions] = useState([])
+  
   const [currentQuestions, setCurrentQuestions] = useState([])
-  const [pageNo, setPageNo] = useState(1)
-  const [QuestionNo, setQuestionNo] = useState(NOMBER_OF_QUENTIONS)
+  const [Answers, setAnswers] = useState([])
+  const [selectedAnswerArray, setSelectedAnswerArray] = useState([])
+  let SELECTED_ANSWER_ARRAY = Array(NOMBER_OF_QUENTIONS).fill(null)
+
 
   selectedTopics = useLocation()?.state?.selected
 
@@ -22,6 +25,7 @@ export default function MuliQuizPlayGround() {
     selected_length = selectedTopics?.length
   else
     selected_length = 0
+
 
   useEffect(()=>{
     
@@ -31,8 +35,24 @@ export default function MuliQuizPlayGround() {
 
     getQuestion()
 
-
   }, [])
+  
+  fetchData = async(title)=>{
+    try{
+      let res = await axios.get(process.env.REACT_APP_QUESTIONS_API + title)
+      
+
+      if(res){
+        let temp = JSON.stringify({"Q":await res.data, "N":JSON.parse(localStorage.getItem(title))?.N})
+        localStorage.setItem(title,temp)
+        return true
+      }
+      
+    }catch(e){
+      console.log(e);
+      return false
+    }
+  }
 
   shuffleQuestions = (array) => {
     for (var i = array.length - 1; i > 0; i--) {
@@ -47,47 +67,67 @@ export default function MuliQuizPlayGround() {
     return array;
   }
 
-  const getQuestion = ()=>{
+  const getQuestion = async()=>{
     if(selected_length > 0){
 
-      let neededQuestions = []
       let suffledQuestions = []
+      let temp = []
 
       for(let i = 0; i<selected_length; i++){
-        let e = selectedTopics[i]
-        let modified_title = e.replace(/ /g, "-").toLowerCase()
-        let temp = JSON.parse(localStorage.getItem(modified_title))
+        let title = selectedTopics[i]
+        let modified_title = title.replace(/ /g, "-").toLowerCase()
 
-        if(temp){
-          neededQuestions = neededQuestions.concat(temp?.Q)
+        TOPIC_HAS = TOPICS.includes(modified_title)
+        
+        if(TOPIC_HAS){
+          if(!JSON.parse(localStorage.getItem(modified_title))?.Q){
+            let flag = await fetchData(modified_title)
+
+            if(flag)
+              temp = temp.concat(JSON.parse(localStorage.getItem(modified_title))?.Q)
+          }
+      
+          else{
+   
+            temp = temp.concat(JSON.parse(localStorage.getItem(modified_title))?.Q)
+
+          }
+          
         }
+        
       }
 
-      suffledQuestions = shuffleQuestions(neededQuestions)
+      if(temp){            
+        suffledQuestions = shuffleQuestions(temp)
+        setCurrentQuestions(suffledQuestions.slice(0,NOMBER_OF_QUENTIONS))
+        console.log(suffledQuestions);
 
-      setCurrentQuestions(suffledQuestions.slice(0,NOMBER_OF_QUENTIONS))
-      setQuestions(suffledQuestions)
-
-      totalPageNo = Math.ceil(neededQuestions.length/NOMBER_OF_QUENTIONS)
+      }
     }
   }
 
-  const nextPage = ()=>{
-    setCurrentQuestions(Questions.slice(QuestionNo, QuestionNo + NOMBER_OF_QUENTIONS))
-    setQuestionNo(QuestionNo + NOMBER_OF_QUENTIONS)
-
-    setPageNo(pageNo+1)
-    window.scroll(0, 0);
-  }
-
-  const backPage = ()=>{
-    setQuestionNo(QuestionNo-NOMBER_OF_QUENTIONS)
-    setCurrentQuestions(Questions.slice(QuestionNo-(NOMBER_OF_QUENTIONS*2), QuestionNo - NOMBER_OF_QUENTIONS ))
-    setPageNo(pageNo-1)
-    window.scroll(0, 0);
-  }
   
+  
+  const setOption = (index, option)=>{
+    SELECTED_ANSWER_ARRAY[index] = option
+  }
 
+  const Submit = (e)=>{
+    let options = ["A", "B", "C", "D"]
+    let answers = []
+
+
+    currentQuestions.forEach((q, i)=>{
+      answers.push(options[q.answer-1])
+      if(q.answer === SELECTED_ANSWER_ARRAY[i]){
+          MARK++
+      }
+    })
+    console.log(MARK);
+    setAnswers(answers);
+    setSelectedAnswerArray(SELECTED_ANSWER_ARRAY)
+
+  }
 
   return (
     <>
@@ -97,40 +137,34 @@ export default function MuliQuizPlayGround() {
               <div className=' p-3'>
                   <span className='text-xl md:text-3xl font-semibold ' >Multy Quiz Playround</span>
               </div>
-              <div className='text-right mr-3'>{Questions.length} questions</div>
-              <div className='text-right mr-3'>{pageNo}/{totalPageNo} pages</div>
             </div>
             {
               currentQuestions.length > 0 ? <div className='p-3 '>
-                  {currentQuestions.map((question,i)=>{
-                    return <div key={i}  className='text-white mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded overflow-hidden '>
+                  {currentQuestions.map((question,x)=>{
+                    return <div key={x}  className='text-white mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(0,255,255,.5)] rounded overflow-hidden '>
                         <div className='flex  font-normal	text-base md:text-lg'>
-                          {(QuestionNo-(NOMBER_OF_QUENTIONS-1))+i}.
+                          {x+1}.
                           <div  dangerouslySetInnerHTML={{__html:question.code}} className={`ml-3 `}></div>
                         </div>
 
                         {
                           OPTIONS.map((OPTION,i)=>{
                             return <div key={i} className='relative ml-3 flex items-center my-3 overflow-hidden text-sm'>
-                                      <span className=' flex justify-center items-center select-none '>
-                                        <span className='border-2 rounded-full px-1 py-0 text-xs  flex justify-center items-center'><div>{OPTION}</div></span>
-                                      </span>
-                                      <div className={`ml-3 `}   dangerouslySetInnerHTML={{__html:question.options[i]}}></div>      
+                               <input type="radio" id={`${question.id}-${i}`} name={`${x}`} value={OPTION} className='mr-3' onChange={(e)=>{setOption(x, i+1)}} />
+                                      <label htmlFor={`${question.id}-${i}`} className='flex hover:cursor-pointer' >
+                                        <span className=' flex justify-center items-center select-none ' htmlFor={`${question.id}-${i}`}>
+                                          <span className={`border-2 rounded-full px-1 py-0 text-xs  flex justify-center items-center ${(Answers[x]===OPTION)?"bg-green-500":""} ${selectedAnswerArray[x] === i+1 ? "bg-red-500":""}` } onClick={()=>console.log(i)}><div>{OPTION}</div></span>
+                                        </span>
+                                        <div className={`ml-3 `}   dangerouslySetInnerHTML={{__html:question.options[i]}}></div> 
+                                      </label>     
                                     </div>
                           })
                         }
-
-
-                        {/* <div className='ml-3 p-1 w-fit fill-white border rounded hover:fill-emerald-700 hover:border-emerald-500 hover:cursor-pointer' onClick={()=>{viewAnswer(i)}}><ANSWER_ICON/></div>
-
-                        <div id={`answer-`+i} className='m-3 hidden'><span  className='text-emerald-500 font-semibold '>Answer: </span><span className='rounded-full border-2 text-xs px-1 py-0'>{OPTIONS[question.answer-1]}</span></div> */}
                     </div>
                   })}
 
-                   <div className={`flex justify-center mb-10 `}>
-                      <button className={`text-white disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800 ${pageNo===1 ?"hidden":""}`} onClick={()=>backPage()}>Back</button>
-
-                      <button className={`text-white disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800 ${pageNo>=totalPageNo ?"hidden":""}`} onClick={()=>nextPage()}>Next</button>
+                   <div className={`flex justify-center mb-10 `}>              
+                      <button className={`text-white disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800 `} onClick={()=>Submit()}>Submit</button>
                     </div>
                   
 

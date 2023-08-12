@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ReactComponent as ANSWER_ICON } from '../asserts/answer.svg'
 
 
-const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "time-and-work", "simple-interest", "compound-interest"]
+const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "simple-interest", "compound-interest", "time-and-work", "profit-and-loss", "problems-on-ages", "calendar", "partnership", "average", "percentage", "volume-and-surface-area", "permutation-and-combination", "clock", "numbers", "problems-on-numbers", "problems-on-h.c.f-and-l.c.m", "area", "simplification", "square-root-and-cube-root", "decimal-fraction", "surds-and-indices", "pipes-and-cistern", "ratio-and-proportion", "chain-rule", "alligation-or-mixture", "boats-and-streams", "probability"]
 
 const OPTIONS = ['A', 'B', 'C', 'D']
 

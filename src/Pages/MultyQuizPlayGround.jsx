@@ -4,7 +4,7 @@ import axios from 'axios';
 
 let navigate, selected_length, selectedTopics, shuffleQuestions, TOPIC_HAS, fetchData;
 
-const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "time-and-work", "simple-interest", "compound-interest"]
+const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "simple-interest", "compound-interest", "time-and-work", "profit-and-loss", "problems-on-ages", "calendar", "partnership", "average", "percentage", "volume-and-surface-area", "permutation-and-combination", "clock", "numbers", "problems-on-numbers", "problems-on-h.c.f-and-l.c.m", "area", "simplification", "square-root-and-cube-root", "decimal-fraction", "surds-and-indices", "pipes-and-cistern", "ratio-and-proportion", "chain-rule", "alligation-or-mixture", "boats-and-streams", "probability"]
 
 
 const OPTIONS = ['A', 'B', 'C', 'D']
@@ -148,7 +148,7 @@ export default function MuliQuizPlayGround() {
               </div>
             </div>
             <div id='score-board' className='text-white p-3 flex justify-center text-xl font-semibold mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(150,150,150,.5)] rounded hidden'>
-              <span>Total Score {Score}/30</span>
+              <span>Total Score {Score}/{currentQuestions.length}</span>
             </div>
             {
               currentQuestions.length > 0 ? <div className='p-3 '>

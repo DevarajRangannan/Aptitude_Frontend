@@ -2,7 +2,7 @@ import React, {useState, useEffect } from 'react'
 import { useNavigate,useLocation } from 'react-router'
 import axios from 'axios';
 
-let navigate, selected_length, selectedTopics, shuffleQuestions, TOPIC_HAS, fetchData, MARK = 0;
+let navigate, selected_length, selectedTopics, shuffleQuestions, TOPIC_HAS, fetchData;
 
 const TOPICS = ["problems-on-trains", "time-and-distance", "height-and-distance", "time-and-work", "simple-interest", "compound-interest"]
 
@@ -16,6 +16,7 @@ export default function MuliQuizPlayGround() {
   const [currentQuestions, setCurrentQuestions] = useState([])
   const [Answers, setAnswers] = useState([])
   const [selectedAnswerArray, setSelectedAnswerArray] = useState([])
+  const [Score, setScore] = useState(10)
   let SELECTED_ANSWER_ARRAY = Array(NOMBER_OF_QUENTIONS).fill(null)
 
 
@@ -101,7 +102,6 @@ export default function MuliQuizPlayGround() {
         suffledQuestions = shuffleQuestions(temp)
         setCurrentQuestions(suffledQuestions.slice(0,NOMBER_OF_QUENTIONS))
         console.log(suffledQuestions);
-
       }
     }
   }
@@ -113,9 +113,12 @@ export default function MuliQuizPlayGround() {
   }
 
   const Submit = (e)=>{
+    let score_board = document.getElementById("score-board")
+    let submit_btn = document.getElementById("submit")
+
     let options = ["A", "B", "C", "D"]
     let answers = []
-
+    let MARK = 0
 
     currentQuestions.forEach((q, i)=>{
       answers.push(options[q.answer-1])
@@ -123,9 +126,15 @@ export default function MuliQuizPlayGround() {
           MARK++
       }
     })
-    console.log(MARK);
+
+    setScore(MARK)
+    score_board.classList.remove("hidden")
+    submit_btn.classList.add("hidden")
+
     setAnswers(answers);
     setSelectedAnswerArray(SELECTED_ANSWER_ARRAY)
+
+    window.scroll(0,0)
 
   }
 
@@ -137,6 +146,9 @@ export default function MuliQuizPlayGround() {
               <div className=' p-3'>
                   <span className='text-xl md:text-3xl font-semibold ' >Multy Quiz Playround</span>
               </div>
+            </div>
+            <div id='score-board' className='text-white p-3 flex justify-center text-xl font-semibold mt-5 mb-10 p-5 bg-[#242323] drop-shadow-[0_1px_5px_rgba(150,150,150,.5)] rounded hidden'>
+              <span>Total Score {Score}/30</span>
             </div>
             {
               currentQuestions.length > 0 ? <div className='p-3 '>
@@ -153,7 +165,7 @@ export default function MuliQuizPlayGround() {
                                <input type="radio" id={`${question.id}-${i}`} name={`${x}`} value={OPTION} className='mr-3' onChange={(e)=>{setOption(x, i+1)}} />
                                       <label htmlFor={`${question.id}-${i}`} className='flex hover:cursor-pointer' >
                                         <span className=' flex justify-center items-center select-none ' htmlFor={`${question.id}-${i}`}>
-                                          <span className={`border-2 rounded-full px-1 py-0 text-xs  flex justify-center items-center ${(Answers[x]===OPTION)?"bg-green-500":""} ${selectedAnswerArray[x] === i+1 ? "bg-red-500":""}` } onClick={()=>console.log(i)}><div>{OPTION}</div></span>
+                                          <span className={`border-2 rounded-full px-1 py-0 text-xs  flex justify-center items-center ${(Answers[x]===OPTION)?"bg-green-500":""} ${selectedAnswerArray[x] === i+1 ? "bg-red-500":""}` }><div>{OPTION}</div></span>
                                         </span>
                                         <div className={`ml-3 `}   dangerouslySetInnerHTML={{__html:question.options[i]}}></div> 
                                       </label>     
@@ -163,7 +175,7 @@ export default function MuliQuizPlayGround() {
                     </div>
                   })}
 
-                   <div className={`flex justify-center mb-10 `}>              
+                   <div id='submit' className={`flex justify-center mb-10 `}>              
                       <button className={`text-white disabled:bg-red-500 bg-emerald-600 rounded-md px-8 py-2 m-3 lg:my-0 inline-block hover:bg-emerald-800 `} onClick={()=>Submit()}>Submit</button>
                     </div>
                   
